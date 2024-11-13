@@ -25,13 +25,14 @@ class Garment {
         this.stockQuantity = stockQuantity;
     }
 
+    // Update the stock quantity of the garment
     void updateStock(int quantity) {
-        // To be implemented in later commits
+        this.stockQuantity += quantity;
     }
 
+    // Calculate the price after applying a discount percentage
     double calculateDiscountPrice(double discountPercentage) {
-        // To be implemented in later commits
-        return 0;
+        return this.price - (this.price * discountPercentage / 100);
     }
 }
 
@@ -50,9 +51,9 @@ class Fabric {
         this.pricePerMeter = pricePerMeter;
     }
 
+    // Calculate the cost based on the given meters of fabric
     public double calculateCost(double meters) {
-        // To be implemented in later commits
-        return 0;
+        return meters * this.pricePerMeter;
     }
 }
 
