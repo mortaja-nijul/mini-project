@@ -127,6 +127,7 @@ class Customer {
     public String name;
     public String email;
     public String phone;
+    private List<Order> orders;
 
     // Constructor
     public Customer(String customerId, String name, String email, String phone) {
@@ -134,15 +135,17 @@ class Customer {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.orders = new ArrayList<>();
     }
 
+    // Place an order and add it to the customer's order list
     public void placeOrder(Order order) {
-        // To be implemented in later commits
+        orders.add(order);
     }
 
+    // View the list of all orders placed by the customer
     public List<Order> viewOrders() {
-        // To be implemented in later commits
-        return null;
+        return orders;
     }
 }
 
@@ -155,17 +158,24 @@ class Inventory {
         this.garments = new ArrayList<>();
     }
 
+    // Add a garment to the inventory
     public void addGarment(Garment garment) {
-        // To be implemented in later commits
+        garments.add(garment);
     }
 
+    // Remove a garment from the inventory by ID
     public void removeGarment(String id) {
-        // To be implemented in later commits
+        garments.removeIf(g -> g.id.equals(id));
     }
 
+    // Find a garment in the inventory by ID
     public Garment findGarment(String id) {
-        // To be implemented in later commits
-        return null;
+        for (Garment g : garments) {
+            if (g.id.equals(id)) {
+                return g;
+            }
+        }
+        return null; // Return null if the garment is not found
     }
 }
 
