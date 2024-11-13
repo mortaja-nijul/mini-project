@@ -3,6 +3,7 @@ package me.nijul.rmg;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 class Garment {
 
@@ -182,6 +183,87 @@ class Inventory {
 public class Rmg {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Inventory inventory = new Inventory();
+        Customer customer = new Customer("C001", "John Doe", "john@example.com", "1234567890");
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nRMG Management System");
+            System.out.println("1. Add Garment to Inventory");
+            System.out.println("2. View Garments in Inventory");
+            System.out.println("3. Add Order");
+            System.out.println("4. View Customer Orders");
+            System.out.println("5. Exit");
+            System.out.print("Select an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    // Add Garment to Inventory
+                    System.out.print("Enter Garment ID: ");
+                    String id = scanner.nextLine();
+                    System.out.print("Enter Garment Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Description: ");
+                    String description = scanner.nextLine();
+                    System.out.print("Enter Size: ");
+                    String size = scanner.nextLine();
+                    System.out.print("Enter Color: ");
+                    String color = scanner.nextLine();
+                    System.out.print("Enter Price: ");
+                    double price = scanner.nextDouble();
+                    System.out.print("Enter Stock Quantity: ");
+                    int stockQuantity = scanner.nextInt();
+
+                    Garment garment = new Garment(id, name, description, size, color, price, stockQuantity);
+                    inventory.addGarment(garment);
+                    System.out.println("Garment added to inventory.");
+                    break;
+
+                case 2:
+                    // View Garments in Inventory
+                    System.out.println("Garments in Inventory:");
+                    for (Garment g : inventory.garments) {
+                        System.out.println("- " + g.name + " (ID: " + g.id + ", Color: " + g.color + ", Size: " + g.size + ")");
+                    }
+                    break;
+
+                case 3:
+                    // Add Order
+                    System.out.print("Enter Order ID: ");
+                    String orderId = scanner.nextLine();
+                    Order order = new Order(orderId, new Date());
+
+                    System.out.print("Enter Garment ID to add to order: ");
+                    String garmentId = scanner.nextLine();
+                    Garment garmentToAdd = inventory.findGarment(garmentId);
+                    if (garmentToAdd != null) {
+                        order.addGarment(garmentToAdd);
+                        order.calculateTotalAmount();
+                        customer.placeOrder(order);
+                        System.out.println("Order placed successfully.");
+                    } else {
+                        System.out.println("Garment not found in inventory.");
+                    }
+                    break;
+
+                case 4:
+                    // View Customer Orders
+                    System.out.println("Customer Orders:");
+                    for (Order o : customer.viewOrders()) {
+                        o.printOrderDetails();
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
     }
 }
