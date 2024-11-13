@@ -72,12 +72,13 @@ class Supplier {
         this.suppliedFabrics = new ArrayList<>();
     }
 
+    // Add a fabric to the list of supplied fabrics
     public void addFabric(Fabric fabric) {
-        // To be implemented in later commits
+        this.suppliedFabrics.add(fabric);
     }
 
+    // Get the list of supplied fabrics
     public List<Fabric> getSuppliedFabrics() {
-        // To be implemented in later commits
         return suppliedFabrics;
     }
 }
@@ -97,17 +98,26 @@ class Order {
         this.totalAmount = 0;
     }
 
+    // Add a garment to the order
     public void addGarment(Garment garment) {
-        // To be implemented in later commits
+        garments.add(garment);
     }
 
+    // Calculate the total amount for the order based on garments added
     public double calculateTotalAmount() {
-        // To be implemented in later commits
-        return 0;
+        totalAmount = garments.stream().mapToDouble(g -> g.price).sum();
+        return totalAmount;
     }
 
+    // Print the details of the order
     void printOrderDetails() {
-        // To be implemented in later commits
+        System.out.println("Order ID: " + orderId);
+        System.out.println("Order Date: " + orderDate);
+        System.out.println("Total Amount: $" + totalAmount);
+        System.out.println("Garments:");
+        for (Garment g : garments) {
+            System.out.println("- " + g.name + " (" + g.color + ", " + g.size + "): $" + g.price);
+        }
     }
 }
 
