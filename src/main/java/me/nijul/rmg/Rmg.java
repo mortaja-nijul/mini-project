@@ -105,8 +105,8 @@ class Order {
     }
 
     // Calculate the total amount for the order based on garments added
-    public double calculateTotalAmount() {
-        totalAmount = garments.stream().mapToDouble(g -> g.price).sum();
+    public double calculateTotalAmount(double discountPercentage) {
+        totalAmount = garments.stream().mapToDouble(g -> g.calculateDiscountPrice(discountPercentage)).sum();
         return totalAmount;
     }
 
@@ -225,7 +225,7 @@ public class Rmg {
                     // View Garments in Inventory
                     System.out.println("Garments in Inventory:");
                     for (Garment g : inventory.garments) {
-                        System.out.println("- " + g.name + " (ID: " + g.id + ", Color: " + g.color + ", Size: " + g.size + ")");
+                        System.out.println("- " + g.name + " (ID: " + g.id + ", Color: " + g.color + ", Size: " + g.size + ", Stock: " + g.stockQuantity + ")");
                     }
                     break;
 
@@ -238,13 +238,24 @@ public class Rmg {
                     System.out.print("Enter Garment ID to add to order: ");
                     String garmentId = scanner.nextLine();
                     Garment garmentToAdd = inventory.findGarment(garmentId);
-                    if (garmentToAdd != null) {
-                        order.addGarment(garmentToAdd);
-                        order.calculateTotalAmount();
-                        customer.placeOrder(order);
-                        System.out.println("Order placed successfully.");
+                    if (garmentToAdd != null && garmentToAdd.stockQuantity > 0) {
+                        System.out.print("Enter quantity to order: ");
+                        int quantity = scanner.nextInt();
+                        if (quantity <= garmentToAdd.stockQuantity) {
+                            garmentToAdd.updateStock(-quantity);
+                            for (int i = 0; i < quantity; i++) {
+                                order.addGarment(garmentToAdd);
+                            }
+                            System.out.print("Enter discount percentage: ");
+                            double discount = scanner.nextDouble();
+                            order.calculateTotalAmount(discount);
+                            customer.placeOrder(order);
+                            System.out.println("Order placed successfully.");
+                        } else {
+                            System.out.println("Not enough stock available.");
+                        }
                     } else {
-                        System.out.println("Garment not found in inventory.");
+                        System.out.println("Garment not found in inventory or out of stock.");
                     }
                     break;
 
